@@ -1,0 +1,291 @@
+%
+%	$Id: template.tex,v 2.2 2019/07/26 02:31:32 kato Exp $
+%
+% KMD Thesis Template
+%
+% Pick ether \documentclass based on the language you use
+% Should work with either pLaTeX or XeLaTeX
+%
+%\documentclass[12pt,a4j]{jreport}	% Japanese
+\documentclass[12pt,a4paper]{report}	% English
+
+% Specify your style in comma separated parameters (without space)
+%    chicago: use Chicago sytle (otherwise Engineering style)
+%    engineering: use Engineering style (default)
+%    doctor: use Doctor style (otherwise Master style)
+%    proposal: use Proposal style (implies doctor)
+%    master: use Master style (default)
+%    final: use Final style (otherwise Draft style)
+%    draft: use Draft style (automatically becomes final mode
+%           in the previous day and the day of submission dues.
+%           so don't specify final or draft usually)
+%    japanese: use Japanese version (automatically infer from the
+%              documentclass style above, and usualy not necessary)
+%    english: use English version (automatically infer from the
+%             documentclass style above, and usualy not necessary)
+%
+\usepackage[master,engineering]{kmd-thesis}
+
+%
+% If you are going to run LaTeX process in Ovealeaf, you may need to
+% upload the files to create a Project. Then, configure the project
+% settings by click the gear symble at the top right. In Advanced Build
+% Options (left bottom of Project Setting tab), choose ``LaTeX dvipdfmx''
+% in LaTeX Engine.
+%
+
+%%%%%%%%%% Other tweaks
+\makeatletter 
+%
+% Remove the number from subsection headings
+%
+%\renewcommand*{\l@subsection}{\@dottedtocline{2}{3.8em}{1.2em}}
+%\renewcommand{\thesubsection}{\hskip-1.0em}
+
+% Used to letterspace chapter titles
+% adapted from http://stackoverflow.com/a/3951837
+%
+%\newcommand{\addspaces}[1]{\@tfor\letter:=#1\do{\letter{\,}}}
+   
+\makeatother
+
+% Uncomment one of these to change the default Latin font:
+%
+%\renewcommand*\rmdefault{bch}   % Charter
+%\renewcommand*\rmdefault{pnc}   % Century Schoolbook
+ 
+%
+% Uncomment to adjust the default line spacing.  The defaults are 1.2.
+% Tighter spacing can be used, but this is not really recommended for
+% Japanese text.
+%
+%\renewcommand{\baselinestretch}{1.1}
+
+%%%%%%%%%%%%%% Thesis Parameters - Edit as Appropriate %%%%%%%%%%%%%%
+
+%
+% School Year, usually it automatically derived from current date
+%
+% \syear{2018}
+
+%
+% Student Number
+%
+\studentnumber{80733501}
+
+
+%
+% Thesis Title
+%
+\title{Practice of Design Thinking Workshop to Develop\\
+  ``Media Innovator'' Leading Creative Society}
+
+% English subtitle : only when necessary
+%
+%\subtitle{--- In a Viewpoint of Application Development Platform Environments
+%Innovation Generation ---}
+
+
+%
+% Author Name
+%    (specify as first name, last name, and capitalize the first letter)
+%
+\author{Masahiko Inakage}
+
+
+%
+% Research Advisors
+%     First name comes first, and capitalize the top letter.
+%     A white space required between first name and last name
+%	If the title of your advisor is long, use two lines as following:
+%		\addadvisorymember{Project Senior Assistant Professor}{}
+%		\addadvisorymember{\ \ \ \ Marcos Sadao Maekawa}{(Co-Advisor)}
+\ifDR
+   % Ph.D Thesis
+   \addadvisorymember{Professor Hideki Sunahara}{(Principal Advisor)}
+   \addadvisorymember{Professor Akira Kato}{(Co-Advisor)}
+   \addadvisorymember{Professor Kouta Minamizawa}{(Co-Advisor)}
+\else
+   % Master's Thesis
+   \addadvisorymember{Professor Hideki Sunahara}{(Main Research Supervisor)}
+   \addadvisorymember{Project Senior Assistant Professor}{}
+   \addadvisorymember{\ \ \ \ Marcos Sadao Maekawa}{(Co-Advisor)}
+\fi
+
+%
+% Thesis Review Committee
+%     First name comes first, and capitalize the top letter.
+%     A white space required between first name and last name
+%     External Reviewer must be with his/her affiliation
+%     When affiliation is too long, use the following format:
+%        \addthesismember{Dr. Eiji Kawai}
+%            {(Member, National Institute of Information \\
+%             && \ \ and Communications Technology)}
+%	If the title of your advisor is long, use two lines as following:
+%		\addadvisorymember{Project Senior Assistant Professor}{}
+%		\addadvisorymember{\ \ \ \ Marcos Sadao Maekawa}{(Co-Advisor)}
+\ifDR
+   \ifPROPOSAL
+      % No thesis review committee for Ph.D. Proposal
+   \else
+   % Ph.D. Thesis
+      \addthesismember{Professor Akira Kato}{(Chair)}
+      \addthesismember{Professor Susumu Furukawa}{(Member)}
+      \addthesismember{Professor Hiroyuki Kishi}{(Member)}
+      \addthesismember{Associate Professor Akiko Orita}
+                      {(Member, Kanto Gakuin University)}
+   \fi
+\else
+   % Master's Thesis
+   \addthesismember{Professor Hideki Sunahara}{(Chair)}
+   \addthesismember{Professor Akira Kato}{(Co-Reviewer)}
+   \addthesismember{Project Senior Assistant Professor}{}
+   \addthesismember{\ \ \ \ MHD Yamen Saraiji}
+                   {(Co-Reviewer)}
+\fi
+
+
+%
+% 5 or 6 Keywords
+%
+\keywords{Design Thinking, Creative Society, Workshop, Innovation, Education}
+%
+
+
+%
+% Choose one submission category from [Design, Science / Engineering,
+% Social Science / Humanities, Action Research]
+%
+\category{Science / Engineering}
+
+
+%
+% Abstract of the thesis
+%
+\abstract{
+In recent years, sensors are small enough and their prices are getting lower.
+Sensors have change to be eccentrically located.
+The Internet change transfer of large data.
+Thereby, large scale sensor networks have been constructible.
+
+In this kind of sensor network, we need to consider load balancing,
+network redundancy and data reliability.
+Using P2P technology is one of the solutions for load balancing and
+network redundancy.
+
+In this paper, we introduce how to ensure sensor data reliability on the system.
+Approach way is detect fault and grant reliability metadata to the sensor data.
+In fault detection, make a group by location and reliability.
+This group is used for reduce the processing time.
+User can use reliability point for select request data.
+Experimental result shows this approach can grant reliability correctly over
+90\%.
+}
+
+%
+% Acknowledgements in Thesis Language (no \jkmdacknowlegements)
+%
+\kmdacknowledgements{
+I am indebt to Professor Naohito Okude for guiding not only
+about research but with many aspects of my life.
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%% document starts here %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\def\chaptermark#1{\markboth{#1}{ }}%
+%
+% Title Sheet and Abstract
+%
+\titlepage
+\comemberspage
+\firstabstract
+%
+% Table of Contents, List of Figures, List of Tables
+%
+\toc
+\ifPROPOSAL
+   % Ph.D. Proposal do not require list of figures, list of tables, and
+   % acknowledgements
+\else
+   \newpage
+   \listoffigures
+   \listoftables
+   %
+   % In English, here comes acknowledgement
+   %
+   \acknowledgements
+   \acknowledgementstext
+\fi
+
+\newpage
+\pagenumbering{arabic}
+\def\chaptermark#1{\markboth{\thechapter.\ #1}{ }}%
+
+%%%%%%%%%%%%%%%%%%%%
+% Main Thesis Text %
+%%%%%%%%%%%%%%%%%%%%
+%
+% Here comes main text
+%
+\input{intro-en.tex}
+\input{relatedworks-en.tex}
+%\input{implementation-jp.tex}
+%\input{evaluation-jp.tex}
+%\input{conclusion-jp.tex}
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Just chapter name at the end of main text
+%
+\def\chaptermark#1{\markboth{#1}{ }}%
+
+
+\newpage
+
+%%%%%%%%%%%%%%%%
+% Bibliography %
+%%%%%%%%%%%%%%%%
+
+%
+% Bibliography
+% Using BibTeX (pbibtex) is suggested. You can also create the
+% list of referances with \reference.
+%
+
+%
+% Use to list all references given to bibtex.
+% Don't modify if you need referenaces only cited in the text.
+%
+% \ifDRAFT
+%    \nocite{*}
+% \fi
+
+\bibliography{thesis-en}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+% Style of Bibliography %
+%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\ifCHICAGO
+   \bibliographystyle{econ_edit}
+\else
+   \bibliographystyle{unsrt-url}
+\fi
+%
+%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Appendix if any
+%
+\appendix
+\def\chaptermark#1{\markboth{\thechapter.\ #1}{ }}%
+%
+\input{appendix-en}
+%
+
+\end{document}
+
+% End of File

@@ -1,0 +1,309 @@
+%
+%	$Id: template.tex,v 2.2 2019/07/26 02:31:32 kato Exp $
+%
+% KMD Thesis Template
+%
+% 以下の \documentclass の片方を、仕様する言語に合わせて選択する
+% pLaTeX あるいは XeLaTeX で動作する筈。
+%
+\documentclass[12pt,a4j]{jreport}	% Japanese
+%\documentclass[12pt,a4paper]{report}	% English
+
+% 論文のスタイルをカンマで区切り、空白無しに指定する：
+%    chicago: シカゴ形式にする
+%    engineering: エンジニアリング形式にする (default)
+%    doctor: 博士論文
+%    proposal: 博士論文プロポーザル
+%    master: 修士論文 (default)
+%    final: 提出版
+%    draft: ドラフト版 (提出日と前日は提出版になるので、通常は指定不要)
+%    japanese: 日本語版を指定 (documentclass から判定するので通常は不要)
+%    english: 英語版を指定  (documentclass から判定するので通常は不要)
+%
+\usepackage[master,engineering]{kmd-thesis}
+
+%
+% Overleaf で LaTeX を実行する場合、zip file を upload して Project
+% を生成した後、右上の歯車をクリックして Settings 画面を呼び出し、
+% 左下の Advanced Build Options の LaTeX Engine を ``LaTeX dvipdfmx''
+% を選択しておくこと。
+%
+
+%%%%%%%%%% 各種変更
+\makeatletter 
+%
+% subsection 表題に番号を振らない場合
+%
+%\renewcommand*{\l@subsection}{\@dottedtocline{2}{3.8em}{1.2em}}
+%\renewcommand{\thesubsection}{\hskip-1.0em}
+
+% 章見出しをヘッダに使う場合の文字の間隔を指定
+% http://stackoverflow.com/a/3951837 から引用
+%
+%\newcommand{\addspaces}[1]{\@tfor\letter:=#1\do{\letter{\,}}}
+   
+\makeatother
+
+% default の Latin font を変更する場合、いずれかを活かす：
+%
+%\renewcommand*\rmdefault{bch}   % Charter
+%\renewcommand*\rmdefault{pnc}   % Century Schoolbook
+ 
+%
+% default の行間隔を調整するには、以下を活かす。Default は 1.2 だが、
+% 和文論文でこれを 1.1 にするのは推奨しない
+%
+%\renewcommand{\baselinestretch}{1.1}
+
+%%%%%%%%%%%%%% 論文用の情報 - 適宜編集されたい %%%%%%%%%%%%%%
+
+%
+% 年度、通常は現在の日付から自動的に計算されるので指定しなくてよい
+%
+% \syear{2018}
+
+%
+% 学生番号
+%
+\studentnumber{80733501}
+
+%
+% 日本語題目
+%
+\jtitle{遠隔地にいる人とのインターネットを介した楽器アンサンブルシステムの検討}
+
+%
+% 英語題目
+%
+\title{Practice of Design Thinking Workshop to Develop\\
+  ``Media Innovator'' Leading Creative Society}
+
+%
+% 日本語副題 : 必要な場合のみ
+%
+%\jsubtitle{--- イノベーション世代のアプリケーション開発プラットホーム\\
+%  環境からの視点に基づいて ---}
+
+% 英語副題  : 必要な場合のみ
+%
+%\subtitle{--- In a Viewpoint of Application Development Platform Environments
+%Innovation Generation ---}
+
+%
+% 日本語氏名 （姓と名の間に空白を入れて下さい）
+%
+\jauthor{冨安　香澄}
+
+%
+% 欧文氏名
+%   （first name, last name の順に記入し、先頭文字のみを大文字にする。）
+%
+\author{Kasumi Tomiyasu}
+
+%
+% 指導教員:
+%   （姓と名、名と称号の間に空白を入れて下さい）
+%
+\jaddadvisorymember{砂原 秀樹 教授}{(主指導教員)}
+\jaddadvisorymember{南澤　孝太 教授}{(副指導教員)}
+
+%
+% 審査委員
+%   （姓と名、名と称号の間に空白を入れて下さい）
+%
+% 最大６人まで指定できます。
+%
+\jaddthesismember{砂原　秀樹 教授}{(主査)}
+\jaddthesismember{南澤　孝太 教授}{(副査)}
+\jaddthesismember{ 准教授}{(副査)}
+
+
+%
+% キーワード５〜６個
+%
+\jkeywords{デザイン思考, 創造社会, ワークショップ, イノベーション, 教育}
+
+%
+% 5 or 6 Keywords
+%
+\keywords{Design Thinking, Creative Society, Workshop, Innovation, Education}
+%
+
+%
+% 論文の投稿カテゴリーを一つ選ぶ
+% （デザイン, サイエンス / エンジニアリング,
+%   アクションリサーチ, 社会科学 / 人文科学）
+%
+\jcategory{デザイン}
+
+%
+% Choose one submission category from [Design, Science / Engineering,
+% Social Science / Humanities, Action Research]
+%
+\category{Science / Engineering}
+
+%
+% 内容梗概
+%   注: 行の先頭が\\で始まらないようにすること。
+%
+\jabstract{
+\ruby{慶應義塾}{けいおうぎじゅく}大学大学院メディアデザイン研究科は、
+創造社会にふさわしい産業を興しまた担う国際的に活躍する人材の育成を%
+目的として設立された。
+創造社会では、文化的社会的資源から価値を生み出す方法が変化するといわれている。
+メディアデザイン研究科では、
+創造性を重視した新しい国際社会を先導する人材をメディア・イノベータと呼び、
+その育成に取り組んでいる。
+加えて、社会と深く関わる実践的なプログラム「リアルプロジェクト」を導入し、
+学生たちは自分とは異なる能力をもったメディア・イノベータとのコラボレーションを%
+行いながらビジョン構成力と協調性を身につける。
+このメディア・イノベータを育成する鍵となる手法がデザイン思考である。
+本論文は、メディアデザイン研究科で独自に実践する%
+デザイン思考ワークショップの手法とその成果を紹介する。
+このワークショップは実際に研究科内で実施された他、
+シンガポールやマカオといった海外の研究機関においても開催された。
+これらの実践から得られた知見をまとめ、
+来る創造社会を先導できるグローバルな視点を持ったメディア・イノベータを%
+育成するためのデザイン思考ワークショップの方法を理論化する。
+}
+
+%
+% Abstract of the thesis
+%
+\abstract{
+In recent years, sensors are small enough and their prices are getting lower.
+Sensors have change to be eccentrically located.
+The Internet change transfer of large data.
+Thereby, large scale sensor networks have been constructible.
+
+In this kind of sensor network, we need to consider load balancing,
+network redundancy and data reliability.
+Using P2P technology is one of the solutions for load balancing and
+network redundancy.
+
+In this paper, we introduce how to ensure sensor data reliability on the system.
+Approach way is detect fault and grant reliability metadata to the sensor data.
+In fault detection, make a group by location and reliability.
+This group is used for reduce the processing time.
+User can use reliability point for select request data.
+Experimental result shows this approach can grant reliability correctly over
+90\%.
+}
+
+%
+% 論文記述言語で謝辞を記述する (\jkmdacknowledgements は存在しない)
+%
+\kmdacknowledgements{
+本研究の指導教員であり、
+幅広い知見から的確な指導と暖かい励ましやご指摘をしていただきました%
+慶應義塾大学大学院メディアデザイン研究科の砂原秀樹教授に心から感謝いたします。
+
+研究の方向性について様々な助言や指導をいただきました慶應義塾大学大学院%
+メディアデザイン研究科の加藤朗教授に心から感謝いたします。
+
+研究指導や論文執筆など数多くの助言を賜りました慶應義塾大学大学院%
+メディアデザイン研究科の杉浦一徳准教授に心から感謝いたします。
+
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%% document starts here %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\def\chaptermark#1{\markboth{#1}{ }}%
+%
+% 表紙 および アブストラクト
+%
+\titlepage
+\comemberspage
+\firstabstract
+\secondabstract	% English Abstract
+%
+% 目次, 表目次、図目次
+%
+\toc
+\ifPROPOSAL
+   % Ph.D. Proposal do not require list of figures, list of tables, and
+   % acknowledgements
+\else
+   \newpage
+   \listoffigures
+   \listoftables
+\fi
+
+\newpage
+\pagenumbering{arabic}
+\def\chaptermark#1{\markboth{\thechapter.\ #1}{ }}%
+
+%%%%%%%%%%%%%%%%%%%%
+%     論文本文     %
+%%%%%%%%%%%%%%%%%%%%
+%
+% これ以降本文
+%
+\input{intro-jp.tex}
+\input{relatedworks-jp.tex}
+%\input{implementation-jp.tex}
+%\input{evaluation-jp.tex}
+%\input{conclusion-jp.tex}
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% 本文の最後、これ以降は節番号をヘッダに載せない
+%
+\def\chaptermark#1{\markboth{#1}{ }}%
+
+%
+% 謝辞 : 日本語では参考文献の前
+%
+\acknowledgements
+\acknowledgementstext
+
+\newpage
+
+%%%%%%%%%%%%%%%%
+% Bibliography %
+%%%%%%%%%%%%%%%%
+
+%
+% 参考文献
+% ここでは \reference を使って、自分でリストを作るか、BibTeX を使って
+% リストをつくって下さい。この例では BibTeX を作るような形式になってい
+% ます。
+
+
+%
+% bibtexにリストされている、すべての文献を表示させたい場合は使用する。
+% （本文中で引用されたものだけ使用する場合はこのまま）
+%
+% \ifDRAFT
+%    \nocite{*}
+% \fi
+
+\bibliography{thesis-jp,thesis-en}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+% Style of Bibliography %
+%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\ifCHICAGO
+   \bibliographystyle{jecon_edit}
+\else
+   \bibliographystyle{junsrt-url}
+\fi
+%
+%%%%%%%%%%%%%%%%%%%%%%%
+%
+% もしあれば、付録
+%
+\appendix
+\def\chaptermark#1{\markboth{\thechapter.\ #1}{ }}%
+%
+\input{appendix-jp}
+%
+
+\end{document}
+
+% おしまい

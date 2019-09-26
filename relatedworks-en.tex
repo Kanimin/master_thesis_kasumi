@@ -1,0 +1,88 @@
+% !TEX root = thesis-en.tex
+
+\chapter{Related Works}
+\label{related}
+
+\ifCHICAGO 
+   % move notes to the last of the chapter; engineering thesis doesn't this
+   \makeendnotes 
+\fi
+
+\section{Shifting to Creative Society}
+\subsection{A WHOLE NEW MIND}
+
+Daniel Pink~\cite{Pink2006} said that the future belongs
+to a different kind of person with a different kind of mind:
+artists, inventors, storytellers-creative and holistic "right-brain" thinkers
+whose abilities mark the fault line between who gets ahead and who doesn't.
+Drawing on research from around the world,
+Pink outlines the six fundamentally human abilities
+that are absolute essentials for professional success and
+personal fulfillment-and reveals how to master them.
+A Whole New Mind takes readers to a daring new place,
+and a provocative and necessary new way of thinking about a future
+that's already here.
+While, we ate your bread~\cite{Sugiura2012,Uriu2012}.
+
+\section{Design Thinking Workshop}
+\subsection{IDEO}
+We also ate rice~\cite{Tokuhisa2009} and bread.
+
+\subsection{d-school}
+Also Pink~\cite{Pink2006} said something about creativity.
+
+
+\subsection{SDM}
+Recently SDM is also conducting design thinking workshop in
+the Collaboration Complex\footnote{Graduate School of System Design
+  and Management, Keio University \\\url{http://www.sdm.keio.ac.jp/}}.
+But {\it iias Tsukuba} (Figure~\ref{fig:iias})~\footnote{{\it iias Tsukuba}
+is one of largest shopping center located in Tsukuba city.
+\url{http://tsukuba.iias.jp}}
+has not conducted design thinking workshop yet. 
+
+
+%inputting jpg
+\begin{figure}[htbp]
+\begin{center}
+%  \includegraphics[width=85mm, bb=0 0 640 480]{figures/iias.jpg}
+ \includegraphics[width=85mm]{figures/iias.jpg}\\
+ {\scriptsize (Source: Ph.D. Thesis of Chihiro Sato~\cite{chihiro2014})}
+\end{center}                 
+  \caption{Shopping center {\itshape iiasTsukuba}}
+  \label{fig:iias}
+\end{figure}
+
+
+%inputting tables
+\begin{table}[ht]
+\caption{state of your mind}
+\label{cluster_category}
+\centering
+\small
+\begin{tabu} to \linewidth {|c|c|c|c|}
+\hline
+% setting the size of the grid (only necessary if you want absolute column sizes)
+\makebox[8em][c]{when} &
+\makebox[8em][c]{where} &
+\makebox[8em][c]{who} &
+\makebox[8em][c]{what}\\
+\hline
+Bad & Good & Very Good & Good Good\\
+\hline
+\end{tabu}
+\end{table}
+
+\section{DNS Performance}
+
+It is essential to improve DNS performance without chaning the semantics
+of the DNS. One of the ways is to fully make use of DNSSEC
+{\tt NSEC}/{\tt NSEC3} to allow full-service resolver
+to respond {\tt NXDOMAIN} immedidately
+when the QNAME matches with one of the cached {\tt NSEC}/{\tt NSEC3} records.
+This modification has been proposed by RFC8198~\cite{rfc8198}.
+
+% put endnotes here
+\putendnotes
+
+% Don't put anything below this line

@@ -1,0 +1,90 @@
+% !TEX root = thesis-jp.tex
+
+\chapter{関連研究}
+\label{related}
+
+% Chicago Style のとき、フットノートをすべて章末に移動するスクリプトです。
+\makeendnotes
+   
+\section{創造社会に向けて}
+\subsection{創造社会におけるコンセプトとは}
+
+ダニエル・ピンクは著書 {\it A Whole New Mind: Why Right-Brainers Will
+  Rule the Future: Riverhead Trade}
+（邦訳『ハイ・コンセプト「新しいこと」を考え出す人の時代』）~\cite{Pink2006}
+の中で、過去の歴史の中で価値の高いものは、
+農業、工業、情報、コンセプトへと推移しており、
+今日はコンセプトが世の中を動かしていると説く。
+ピンクが述べるコンセプトとは日本語でいう「概念」という意味ではなく、
+デザイン・ストーリー・調和・共感・遊び・生きがいの6つの感性を例として挙げる。
+そして、コンセプトの源泉である右脳を発達させるための訓練について議論を展開させる。
+
+We, then, ate your bread~\cite{Bellotti2008}.
+
+
+\section{デザイン思考ワークショップ}
+\subsection{IDEO}
+We also ate rice~\cite{Bellotti2008} and bread~\cite{Sugiura2012,Uriu2012}.
+
+\subsection{d-school}
+We also ate rice~\cite{Bellotti2008} and bread~\cite{Tokuhisa2009}.
+
+\subsection{SDM}
+
+最近SDM\footnote{慶應義塾大学大学院システムデザイン・マネジメント研究科
+  \url{http://www.sdm.keio.ac.jp/}}
+もデザイン思考ワークショップを行なっている。
+商業施設 iias Tsukuba（図\ref{iias}）
+{\footnote {iiasTsukuba \url{http://tsukuba.iias.jp}}} ではたぶん、
+まだ行われていない。
+
+
+%横文字にしたい場合（English only）
+{\itshape Italics}
+
+%写真の導入例
+\begin{figure}[htbp]
+\centering
+  % if you have created iias.bb with "ebb iias.jpg" command in
+  % figures directory, you don't have to specify the bb parameters
+  % anymore.
+  %\includegraphics[width=85mm, bb=0 0 640 480]{figures/iias.jpg}
+\includegraphics[width=85mm]{figures/iias.jpg}
+{\footnotesize(佐藤千尋博士論文~\cite{chihiro2014}より引用}
+ \caption{Shopping center {\itshape iiasTsukuba}}
+  \label{iias}
+\end{figure}
+
+
+%表の導入例
+\begin{table}[ht]
+\caption{街をぶらぶら歩く時の状態}
+\label{cluster_category}
+\centering
+\small
+\begin{tabu} to \linewidth {|c|c|c|c|}
+\hline
+% グリッドの大きさ指定
+\makebox[8em][c]{暇な時} &
+\makebox[8em][c]{駅に戻る時} &
+\makebox[8em][c]{家に帰る時} &
+\makebox[8em][c]{散策}\\
+\hline
+気分転換 & 考え事をしたい時 & 天気が良い時 & 買いものがしたい時\\
+\hline
+\end{tabu}
+\end{table}
+
+\section{DNS の性能}
+
+DNS の性能はインターネット上でサービスを提供する際には重要なパラメータである。
+その一つの方法は、DNSSEC で定義された NSEC/NSEC3 を拡張して利用することであり、
+QNAME がキャッシュされた NSEC/NSEC3 にマッチする場合、
+直ちに {\tt NXDOMAIN} を返答することである。
+この拡張は RFC8198~\cite{rfc8198} で定義されている。
+
+% endnotes を置く
+\putendnotes
+
+% この下には何も書かない
+

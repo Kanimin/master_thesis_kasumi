@@ -1,0 +1,1265 @@
+%
+%	$Id: kmd-thesis.sty,v 2.3 2019/07/26 02:32:11 kato Exp $
+%
+% kmd-thesis.sty: thesis macro in KMD
+%
+%					      Ver. 2.2   Feb. 12, 2019
+%					      Ver. 2.1   Jun. 29, 2018
+%                                             Ver. 1.21  Jul. 23, 2015
+%                                             Ver. 1.2   Feb. 23, 2015
+%                                             Ver. 1.1   Dec. 17, 2009
+% 
+% This file must be included before \begin{document}. The Document
+% style must be 'report' or 'jreport' depending on the language,
+% so you should include this macro as follows:
+%    % for Japanese thesis
+%    \documentclass[12pt,a4j]{jreport}
+%    \usepackage[options,...]{kmd-thesis}
+%
+%    % for English thesis
+%    \documentclass[12pt,a4paper]{report}
+%    \usepackage[options,...]{kmd-thesis}
+%
+% Thanks a lot for those folks made efforts to make the macro better,
+% including, but not limited to,
+%   Masato Yamanouchi, Daisuke Uriu, Charith Fernando, Alex Taylor
+%
+\typeout{Thesis Style for Keio University Graduate School of Media Design}
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{kmd-thesis}
+\RequirePackage{iftex}
+\newif\ifDRAFT\DRAFTtrue
+\newif\ifJPN\JPNtrue
+\newif\ifDR\DRfalse
+\newif\ifCHICAGO\CHICAGOfalse
+\newif\ifPROPOSAL\PROPOSALfalse
+\DeclareOption{final}{\DRAFTfalse}
+\DeclareOption{draft}{\DRAFTtrue}
+\DeclareOption{japanese}{\JPNtrue}
+\DeclareOption{english}{\JPNfalse}
+\DeclareOption{doctor}{\DRtrue}
+\DeclareOption{master}{\DRfalse\PROPOSALfalse}
+\DeclareOption{chicago}{\CHICAGOtrue}
+\DeclareOption{engineering}{\CHICAGOfalse}
+\DeclareOption{proposal}{\PROPOSALtrue\DRtrue}
+% kludge to see if current style is Japanese (\partname is not defined
+% in platex/base/j*.cls because in Japanese versions define
+% \prepartname (Dai) and \postpartname (Bu) instead
+% overwritten by the option
+\ifdefined\partname
+   \typeout{ENGISH-MODE}\JPNfalse
+\else
+   \typeout{JAPANESE-MODE}\JPNtrue
+\fi
+
+% determine if the due is today or tomorrow, and in such a case,
+% DRAFT mode is off. Overwritten by the option
+\newcount\yyyymmdd
+\yyyymmdd=\year
+\multiply\yyyymmdd by 100\relax
+\advance\yyyymmdd by \month\relax
+\multiply\yyyymmdd by 100\relax
+\advance\yyyymmdd by \day\relax
+% draft version submission due for 2018 sep degree
+%\ifnum\yyyymmdd=20180621 \DRAFTfalse\fi
+%\ifnum\yyyymmdd=20180622 \DRAFTfalse\fi
+% final version submission due for 2018 sep degree
+%\ifnum\yyyymmdd=20180730 \DRAFTfalse\fi
+%\ifnum\yyyymmdd=20180731 \DRAFTfalse\fi
+% print version submission due for 2018 sep degree
+%\ifnum\yyyymmdd=20180823 \DRAFTfalse\fi
+%\ifnum\yyyymmdd=20180824 \DRAFTfalse\fi
+% draft version submission due for 2019 mar degree
+%\ifnum\yyyymmdd=20181220 \DRAFTfalse\fi
+%\ifnum\yyyymmdd=20181221 \DRAFTfalse\fi
+% final version submission due for 2019 mar degree
+%\ifnum\yyyymmdd=20190131 \DRAFTfalse\fi
+%\ifnum\yyyymmdd=20190201 \DRAFTfalse\fi
+% print version submission due for 2019 mar degree
+\ifnum\yyyymmdd=20190217 \DRAFTfalse\fi
+\ifnum\yyyymmdd=20190218 \DRAFTfalse\fi
+% draft version submission due for 2019 sep degree
+\ifnum\yyyymmdd=20190620 \DRAFTfalse\fi
+\ifnum\yyyymmdd=20190621 \DRAFTfalse\fi
+% final version submission due for 2019 sep degree
+\ifnum\yyyymmdd=20190730 \DRAFTfalse\fi
+\ifnum\yyyymmdd=20190731 \DRAFTfalse\fi
+% print version submission due for 2019 sep degree
+\ifnum\yyyymmdd=20190825 \DRAFTfalse\fi
+\ifnum\yyyymmdd=20190826 \DRAFTfalse\fi
+% draft version submission due for 2020 mar degree
+\ifnum\yyyymmdd=20191219 \DRAFTfalse\fi
+\ifnum\yyyymmdd=20191220 \DRAFTfalse\fi
+% final version submission due for 2020 mar degree
+\ifnum\yyyymmdd=20200130 \DRAFTfalse\fi
+\ifnum\yyyymmdd=20200131 \DRAFTfalse\fi
+% print version submission due for 2020 mar degree
+\ifnum\yyyymmdd=20200216 \DRAFTfalse\fi
+\ifnum\yyyymmdd=20200217 \DRAFTfalse\fi
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\ProcessOptions\relax
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% introduction of default packages
+\usepackage{subfigure}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{multirow}
+\usepackage[hyphens]{url}
+\usepackage{fancybox}
+\usepackage{amssymb}
+\usepackage{moreverb}
+\usepackage{afterpage}
+\usepackage{cite}
+\usepackage{datetime}
+\usepackage{ccaption}           % caption operation
+\usepackage{fn2end}             % move footnote to the end of chapter
+\usepackage{fn2end_config}      % make indentation to footnote
+\usepackage{tabu}               % more powerful/flexible tables
+\usepackage{iftex}
+\ifJPN
+\else
+   \usepackage[english]{babel}
+\fi
+
+%%%% Check which LaTeX implementation is being used and define some missing
+%%%% items depending on which one.
+\newif\ifptex
+\ptexfalse
+%
+\ifXeTeX                              %%% XeLaTeX
+\else
+   \ifLuaTeX                          %%% LuaLaTeX
+   \else
+      \ifPDFTeX                       %%% pdfLaTeX
+      \else                           %%% pLaTeX (assume if none of the above)
+         % Get rid of 'Font shape undefined' errors when using italic
+         % (from http://www.nsknet.or.jp/~tony/TeX/faq/error.htm)
+         \DeclareFontShape{JY1}{mc}{m}{it}{<5> <6> <7> <8> <9> <10> sgen*min
+             <10.95><12><14.4><17.28><20.74><24.88> min10 <-> min10}{}
+         \DeclareFontShape{JT1}{mc}{m}{it}{<5> <6> <7> <8> <9> <10> sgen*tmin
+             <10.95><12><14.4><17.28><20.74><24.88> tmin10 <-> tmin10}{}
+         \DeclareFontShape{JY1}{gt}{m}{it}{<5> <6> <7> <8> <9> <10> sgen*min
+             <10.95><12><14.4><17.28><20.74><24.88> min10 <-> min10}{}
+         \DeclareFontShape{JT1}{gt}{m}{it}{<5> <6> <7> <8> <9> <10> sgen*tmin
+             <10.95><12><14.4><17.28><20.74><24.88> tmin10 <-> tmin10}{}
+         % Same for small caps
+         \DeclareFontShape{JY1}{mc}{m}{sc}{<5> <6> <7> <8> <9> <10> sgen*min
+             <10.95><12><14.4><17.28><20.74><24.88> min10 <-> min10}{}
+         \DeclareFontShape{JT1}{mc}{m}{sc}{<5> <6> <7> <8> <9> <10> sgen*tmin
+             <10.95><12><14.4><17.28><20.74><24.88> tmin10 <-> tmin10}{}
+         \DeclareFontShape{JY1}{gt}{m}{sc}{<5> <6> <7> <8> <9> <10> sgen*goth
+             <10.95><12><14.4><17.28><20.74><24.88> min10 <-> min10}{}
+         \DeclareFontShape{JT1}{gt}{m}{sc}{<5> <6> <7> <8> <9> <10> sgen*tgoth
+             <10.95><12><14.4><17.28><20.74><24.88> tmin10 <-> tmin10}{}
+         %
+         \ptextrue
+      \fi
+   \fi
+\fi
+
+% Decide what graphicx driver to use for images. 
+% For pLaTeX should use 'dvipdfmx'; default is OK otherwise.
+\newcommand\gfxdriver{}
+\ifXeTeX                            % XeLaTeX (doesn't work with jreport)
+   \usepackage{fontspec}
+   % Use standard TeX ligature logic
+   \defaultfontfeatures{Ligatures=TeX}
+   % Enable use of XeTeX CJK fonts for Japanese text if needed
+   \usepackage{xeCJK}
+   % XeLaTeX also requires specifying CJK fonts
+   \setCJKmainfont{IPAMincho}% choose a suitable Japanese system font (serif)
+   \setCJKsansfont{IPAGothic}% choose a suitable Japanese system font (sans)
+   \setCJKmonofont{IPAGothic}% choose a suitable Japanese system font (mono)
+\else
+   \ifptex                        % pLaTeX
+      \ifJPN
+         \usepackage{pxrubrica}   % Ruby Package
+         \rubysetup{g}
+      \fi
+      \renewcommand\gfxdriver{dvipdfmx}
+   \fi      
+\fi
+\usepackage[\gfxdriver]{graphicx}
+%\usepackage[export]{adjustbox}	% this breaks dvipdfmx to incorporate figures
+\usepackage{fancyhdr}           % used to enable nice page headers
+\ifXeTeX
+   \usepackage[CJK,nooverlap]{ruby}
+\fi
+\ifptex
+   \usepackage[hyphens]{url}    % format URLs nicely
+   \usepackage[hidelinks,dvipdfmx]{hyperref}
+   \usepackage{pxjahyper}
+   \usepackage[ipaex]{pxchfon}
+   \usepackage[utf8]{inputenc}
+\else                           % also create links in document
+   \usepackage[hidelinks,hypertexnames=false,hyperfootnotes=false]{hyperref}
+\fi
+
+\ifCHICAGO
+   \usepackage[abbr]{harvard-oikos}
+\fi
+%
+% Table padding for use with tabu (only if \usepackage{tabu} specified above)
+\setlength{\tabulinesep}{3pt}   % Vertical padding between rows
+%
+% Adjust space around float captions
+\setlength{\abovecaptionskip}{0.5em}    % Space above bottom captions
+\setlength{\belowcaptionskip}{1em}      % Space below top captions
+%\headrulewidth 0.4pt\relax
+
+% Make in-page footnotes use regular numbers instead of superscripts
+\renewcommand{\@makefntext}[1]{%
+   \noindent
+   \leftskip=1.5em
+   \hskip-1.5em
+   \makebox[1.5em][l]{\@thefnmark}{#1}
+}
+\setlength{\skip\footins}{\baselineskip}
+\setlength{\footnotesep}{1.3em}
+
+%
+% Add a nice header to each non-initial page (optional):
+%
+\textwidth=14.6cm
+\pagestyle{fancy}
+\setlength{\headheight}{13.6pt}
+%\renewcommand{\chaptermark}[1]{\markboth{\textsc{\protect\addspaces{#1}}}{}}
+% When header took too much space, use following instead of the previous line
+%\renewcommand{\chaptermark}[1]{\markboth{#1}{}}
+%\renewcommand{\sectionmark}[1]{\markright{\thesection\hspace{1em}#1}}
+
+\def\chaptermark#1{\markboth{\thechapter.\ #1}{ }}%
+\def\sectionmark#1{\markright{\thesection.\ #1}}
+
+\fancyhead{}
+\fancyfoot{}
+\makeatletter\if@twoside       % Two-sided (book) style layout
+   \fancyhead[LE]{\footnotesize\leftmark}   % Chapter name on left-hand page
+   \fancyhead[RO]{\footnotesize\rightmark}  % Section name on right-hand page
+   \fancyfoot[C]{\thepage}
+   \ifDRAFT
+      \fancyfoot[LE]{\draftstr}
+      \fancyfoot[RO]{\draftstr}
+   \fi
+\else                          % Regular (single-page) layout
+   \fancyhead[L]{\footnotesize\leftmark}    % Chapter name at left side
+   \fancyhead[R]{\footnotesize\rightmark}   % Section name at right side
+   \fancyfoot[C]{\thepage}
+   \ifDRAFT
+      \fancyfoot[L]{Draft \tt\draftstr}
+   \fi
+\fi\makeatother
+
+% Uncomment the following to include the abstract in the table of contents:
+%\ifJPN
+%   \let\saved@jabstractpage\jabstractpage
+%   \renewcommand{\jabstractpage}{%
+%      \addcontentsline{toc}{chapter}{\abstractname}
+%      \saved@jabstractpage
+%   }
+%\else
+%   \let\saved@abstractpage\abstractpage
+%   \renewcommand{\abstractpage}{%
+%      \addcontentsline{toc}{chapter}{\abstractname}
+%      \saved@abstractpage
+%   }
+%\fi
+
+\makeatletter
+
+\ifPROPOSAL
+\renewcommand\chapter{%\if@openright\cleardoublepage\else\clearpage\fi
+                    %\thispagestyle{plain}%
+                    \global\@topnum\z@
+                    \@afterindentfalse
+                    \secdef\@pchapter\@schapter}
+\def\@pchapter[#1]#2{\ifnum \c@secnumdepth >\m@ne
+                         \refstepcounter{chapter}%
+                         \typeout{\@chapapp\space\thechapter.}%
+                         \addcontentsline{toc}{chapter}%
+                                   {\protect\numberline{\thechapter}#1}%
+                    \else
+                      \addcontentsline{toc}{chapter}{#1}%
+                    \fi
+                    \chaptermark{#1}%
+                    \addtocontents{lof}{\protect\addvspace{10\p@}}%
+                    \addtocontents{lot}{\protect\addvspace{10\p@}}%
+                    \if@twocolumn
+                      \@topnewpage[\@makechapterhead{#2}]%
+                    \else
+                      \@makepchapterhead{#2}%
+                      \@afterheading
+                    \fi}
+
+\def\@makepchapterhead#1{%
+  \vspace*{20\p@}%
+  {\parindent \z@ \raggedright \normalfont
+    \ifnum \c@secnumdepth >\m@ne
+        \Large\bfseries \@chapapp\space \thechapter\hspace{0.5cm}
+%        \par\nobreak
+%        \vskip 20\p@
+    \fi
+ %   \interlinepenalty\@M
+    \Large \bfseries #1\par\nobreak
+    \vskip 10\p@
+}}
+
+\renewcommand\section{\@startsection {section}{1}{\z@}%
+                                   {-2ex \@plus -.5ex \@minus -.1ex}%
+                                   {1.2ex \@plus.1ex}%
+                                   {\normalfont\large\bfseries}}
+\renewcommand\subsection{\@startsection{subsection}{2}{\z@}%
+                                     {-2ex\@plus -.5ex \@minus -.1ex}%
+                                     {.7ex \@plus .1ex}%
+                                     {\normalfont\normalsize\bfseries}}
+\renewcommand\subsubsection{\@startsection{subsubsection}{3}{\z@}%
+                                     {-2ex\@plus -.5ex \@minus -.1ex}%
+                                     {.7ex \@plus .1ex}%
+                                     {\normalfont\normalsize\bfseries}}
+\renewcommand\paragraph{\@startsection{paragraph}{4}{\z@}%
+                                    {3.25ex \@plus1ex \@minus.2ex}%
+                                    {-1em}%
+                                    {\normalfont\normalsize\bfseries}}
+\renewcommand\subparagraph{\@startsection{subparagraph}{5}{\parindent}%
+                                       {3.25ex \@plus1ex \@minus .2ex}%
+                                       {-1em}%
+                                      {\normalfont\normalsize\bfseries}}
+
+
+\fi
+
+\def\kmdthesis#1{
+   \@for\style:=#1\do{\kmdopt{\style}}
+   \thesisclass
+   \fi
+   \setupheaderfooter
+}
+\makeatother
+
+
+%
+% Academic Year
+%
+\newcount\ayear
+\ayear=\year
+\ifnum\month<4
+   \advance\ayear by -1
+\fi
+
+%
+% title page items
+%
+\def\studentnumberstr{xxxxxxx}
+\newcommand{\studentnumber}[1]{
+   \def\studentnumberstr{#1}
+}
+% thesis class
+\ifDR
+   \ifJPN
+      \ifPROPOSAL
+         \def\jdegree{博士}
+         \def\jdoctitle{博士論文プロポーザル}
+         \def\jdoctype{論文プロポーザル}
+         \def\jdocname{博士論文プロポーザル}
+      \else
+         \def\jdegree{博士}  
+         \def\jdoctitle{博士論文}
+         \def\jdoctype{論文}
+         \def\jdocname{博士論文}
+      \fi
+   \fi
+   \ifPROPOSAL
+      \def\degree{Ph.D. Proposal in}
+      \def\doctitle{Doctoral Dissertation Proposal}
+      \def\doctitleacronym{DTP}
+   \else
+      \def\degree{Ph.D. in}
+      \def\doctitle{Doctoral Dissertation}
+      \def\doctitleacronym{DT}
+   \fi
+\else     
+   \ifJPN
+      \def\jdegree{修士}  
+      \def\jdoctitle{修士論文}
+       \def\jdoctype{論文}
+      \def\jdocname{修士論文}
+   \fi
+   \def\degree{Master of}                   
+   \def\doctitle{Master's Thesis}
+   \def\doctitleacronym{MT}
+\fi
+
+% thesis title
+\ifJPN
+   \def\jtitlestr{Title}
+   \newcommand{\jtitle}[1]{
+      \def\jtitlestr{#1}
+   }
+\fi   
+\def\titlestr{Title}
+\renewcommand{\title}[1]{
+   \def\titlestr{#1}
+}
+% thesis subtitle
+\newcommand{\subtitle}[1]{
+  \def\subtitlestr{#1}
+}  
+\ifJPN
+   \newcommand{\jsubtitle}[1]{
+     \def\jsubtitlestr{#1}
+   }
+\fi
+% author name
+\ifJPN
+   \def\jauthorstr{I am the author}
+   \newcommand{\jauthor}[1]{
+      \def\jauthorstr{#1}
+   }
+\fi   
+%
+\def\authorstr{I am the author}
+\renewcommand{\author}[1]{
+   \def\authorstr{#1}
+}
+% School year string
+\def\syearstr{\number\ayear}
+\newcommand{\syear}[1]{
+   \def\syearstr{#1}
+}
+\ifJPN
+   \def\jayearstr{\hspace{0.3cm}\syearstr\,年度}
+\fi
+\def\ayearstr{Academic Year \syearstr\ }
+
+%
+% committee members' page items
+%
+% Name of Major
+\ifJPN
+   \def\jmajorstr{メディアデザイン学}
+\fi
+\def\majorstr{Media Design}
+%
+\newcount\nThesisMembers\nThesisMembers=0 %
+\newcount\nAdvisoryMembers\nAdvisoryMembers=0
+\def\addthesismember#1#2{
+   \advance\nThesisMembers by 1\relax
+   \ifcase\nThesisMembers
+      \or\def\firstThesisMember{#1}\def\firstThesisPosition{#2}
+      \or\def\secondThesisMember{#1}\def\secondThesisPosition{#2}
+      \or\def\thirdThesisMember{#1}\def\thirdThesisPosition{#2}
+      \or\def\fourthThesisMember{#1}\def\fourthThesisPosition{#2}
+      \or\def\fifthThesisMember{#1}\def\fifthThesisPosition{#2}
+      \or\def\sixthThesisMember{#1}\def\sixthThesisPosition{#2}
+   \fi
+}
+\def\addadvisorymember#1#2{
+   \advance\nAdvisoryMembers by 1\relax
+   \ifcase\nAdvisoryMembers
+      \or\def\firstAdvisoryMember{#1}\def\firstAdvisoryPosition{#2}
+      \or\def\secondAdvisoryMember{#1}\def\secondAdvisoryPosition{#2}
+      \or\def\thirdAdvisoryMember{#1}\def\thirdAdvisoryPosition{#2}
+      \or\def\fourthAdvisoryMember{#1}\def\fourthAdvisoryPosition{#2}
+      \or\def\fifthAdvisoryMember{#1}\def\fifthAdvisoryPosition{#2}
+      \or\def\sixthAdvisoryMember{#1}\def\sixthAdvisoryPosition{#2}
+   \fi
+}  
+\newcount\njThesisMembers\njThesisMembers=0 %
+\newcount\njAdvisoryMembers\njAdvisoryMembers=0
+\def\jaddthesismember#1#2{
+   \advance\njThesisMembers by 1\relax
+   \ifcase\njThesisMembers
+      \or\def\firstjThesisMember{#1}\def\firstjThesisPosition{#2}
+      \or\def\secondjThesisMember{#1}\def\secondjThesisPosition{#2}
+      \or\def\thirdjThesisMember{#1}\def\thirdjThesisPosition{#2}
+      \or\def\fourthjThesisMember{#1}\def\fourthjThesisPosition{#2}
+      \or\def\fifthjThesisMember{#1}\def\fifthjThesisPosition{#2}
+      \or\def\sixthjThesisMmember{#1}\def\sixthjThesisPosition{#2}
+   \fi
+}
+\def\jaddadvisorymember#1#2{
+   \advance\njAdvisoryMembers by 1\relax
+   \ifcase\njAdvisoryMembers
+      \or\def\firstjAdvisoryMember{#1}\def\firstjAdvisoryPosition{#2}
+      \or\def\secondjAdvisoryMember{#1}\def\secondjAdvisoryPosition{#2}
+      \or\def\thirdjAdvisoryMember{#1}\def\thirdjAdvisoryPosition{#2}
+      \or\def\fourthjAdvisoryMember{#1}\def\fourthjAdvisoryPosition{#2}
+      \or\def\fifthjAdvisoryMember{#1}\def\fifthjAdvisoryPosition{#2}
+      \or\def\sixthjAdvisoryMember{#1}\def\sixthjAdvisoryPosition{#2}
+   \fi
+}  
+  
+%
+% abstract page items
+%
+\ifJPN
+   \def\jcategorystr{keyword1, keyword2}
+   \def\jcategory#1{\def\jcategorystr{#1}}
+\fi
+\def\categorystr{keyword1, keyword2}
+\def\category#1{\def\categorystr{#1}}
+
+\ifJPN
+   \def\jkeywordsstr{keyword1, keyword2}
+   \def\jkeywords#1{\def\jkeywordsstr{#1}}
+\fi
+\def\keywordsstr{keyword1, keyword2}
+\def\keywords#1{\def\keywordsstr{#1}}
+%
+\ifJPN
+   \def\jabstracttext{This is the abstract.}
+   \newcommand{\jabstract}[1]{
+      \def\jabstracttext{#1}
+   }
+\fi   
+\def\abstracttext{This is the abstract.}
+\renewcommand{\abstract}[1]{
+        \def\abstracttext{#1}
+}
+
+% Acknolwedgement
+\def\acknowledgementstext{This is acknowledgement}
+\newcommand{\kmdacknowledgements}[1]{
+   \def\acknowledgementstext{#1}
+}  
+
+\ifJPN
+   \newcommand{\jabstractpage}{
+%  \begin{center}
+%     \renewcommand{\thefootnote}{\fnsymbol{footnote}}
+%     \Large\bf \titlestr\footnote[1]
+%        {慶應義塾大学大学院 メディアデザイン研究科
+%        { } \jdoctitle,
+%        KMD-\studentnumberstr,
+%        \datestr.}
+%     \renewcommand{\thefootnote}{\arabic{footnote}}
+%     \end{center}
+%     \vspace*{1mm}
+%     \begin{center}
+%        \large\authorstr
+%     \end{center}
+%     \vspace*{10mm}
+
+      \begin{center}
+         \large\jdoctitle\jayearstr
+      \end{center}
+      \begin{center}
+         \Large\jtitlestr
+      \end{center}
+      \ifdefined\jsubtitlestr\begin{center}\jsubtitlestr\end{center}\fi
+      \vspace*{1mm}
+      \begin{center}
+         \ifCHICAGO
+             {\large カテゴリー：\jcategorystr}
+         \else
+             {\large カテゴリ：\jcategorystr}
+         \fi
+      \end{center}
+      \vspace*{1mm}
+      \begin{center}
+         {\large 論文要旨}
+      \end{center}
+      \vspace*{1mm}
+      \par
+         \jabstracttext
+      \vspace*{2mm}
+      \begin{flushleft}
+         {\large キーワード：}
+      \end{flushleft}
+      \jkeywordsstr
+      \vspace*{3mm}
+      \begin{flushright}
+         {\large 慶應義塾大学大学院メディアデザイン研究科}
+      \end{flushright}
+      \begin{flushright}
+         \large\jauthorstr
+      \end{flushright}
+   }
+\fi   
+%
+\newcommand{\abstractpage}{
+%         \begin{center}
+%                 \renewcommand{\thefootnote}{\fnsymbol{footnote}}
+%                 \Large\bf \etitlestr\footnote[1]
+%                         {{\edoctitle}, 
+%                         Graduate School of Media \mbox{Design,}
+%                         Keio University,
+%                         {KMD-\studentnumberstr},
+%                         {\edatestr}.}
+%                 \renewcommand{\thefootnote}{\arabic{footnote}}
+%         \end{center}
+%         \vspace*{1mm}
+%         \begin{center}
+%                 \large\eauthorstr
+%         \end{center}
+%         \vspace*{10mm}
+
+   \begin{center}
+      {\large Abstract of  \doctitle\, of \ayearstr\,}
+   \end{center}
+   \begin{center}
+      \Large\titlestr
+   \end{center}
+   \ifdefined\subtitlestr\begin{center}{\large\subtitlestr}\end{center}\fi
+   \vspace*{2mm}
+   \begin{center}
+      {\large Category: \categorystr }
+   \end{center}
+   \vspace*{2mm}
+   \begin{center}
+      {\large Summary}
+   \end{center}
+   \vspace*{1mm}
+   %\par
+   \abstracttext
+   \vspace*{2mm}
+   \begin{flushleft}
+      {\large Keywords:}
+   \end{flushleft}
+   \keywordsstr
+   \vspace*{3mm}
+   \begin{flushright}
+      {\large Keio University Graduate School of Media Design}
+   \end{flushright}
+   \begin{flushright}
+      \large\authorstr
+   \end{flushright}
+}
+%
+\newcommand{\toc}{
+   \newpage
+   \tableofcontents
+}
+
+%moved from previous .tex (20120530 by Uriu)
+
+\def\Hline{\noalign{\hrule height 0.4mm}}
+\newlength{\tmplen}
+\newlength{\tmplena}
+\makeatletter
+\newcounter{procedurectr}
+\newenvironment{procedure}{
+   \vspace{6pt}%
+   \list{}%
+   {\topsep15pt \labelwidth2em%
+      \leftmargin3em \rightmargin\leftmargin%
+      \itemindent1em \listparindent\itemindent%
+      \usecounter{procedurectr}%
+      \def\makelabel{\procedurelabel}}}
+{\endlist}
+\newcommand*\procedurelabel[1]{%
+  \parbox[b]{\labelwidth}
+         {\makebox[0pt][l]
+           {\normalfont\bfseries
+             \romannumeral\the\@itemdepth
+                 {\stepcounter{procedurectr}\@arabic\c@procedurectr.} #1}\\}%
+  \hfill\relax}
+\newenvironment{terminology}{
+   \vspace{6pt}\list{}{\topsep15pt\itemsep15pt\labelwidth2em%
+      \itemindent1em \listparindent\itemindent%
+      \let\makelabel\descriptionlabel}}
+{\endlist}
+
+%%% These redefinitions broke description lists quite badly, at least in English...
+%\renewenvironment{description}
+%{\vspace{6pt}\list{}{\topsep15pt \labelwidth2em%
+%    \leftmargin3em \rightmargin\leftmargin%
+%    \itemindent1em \listparindent\itemindent%
+%    \let\makelabel\descriptionlabel}}
+%{\endlist}
+%\renewcommand*\descriptionlabel[1]{%
+%  \parbox[b]{\labelwidth}{\makebox[0pt][l]{\normalfont\bfseries #1}\\}%
+%  \hfill\relax}
+
+%%% ここから
+\ifJPN
+   \newdimen\samplemidashi
+   \newdimen\midashi
+   \def\@stretchlabel#1#2{%
+      \setbox\@tempboxa\hbox{\vrule width#1}\samplemidashi\wd\@tempboxa\relax%
+      \setbox\@tempboxa\hbox{#2}\midashi\wd\@tempboxa\relax%
+      \ifdim\midashi>\samplemidashi{#2}%
+      \else
+         \hbox to #1{%
+            \kanjiskip=0pt plus 1fill minus 1fill
+            \xkanjiskip=\kanjiskip
+            \spaceskip=\kanjiskip
+            \xspaceskip=\kanjiskip
+            #2}%
+      \fi%
+   }
+\fi
+
+%%%%
+% Determine whether appendices are defined as chapters or as sections, and use
+% the appropriate heading style, figure and table numbers
+\let\saved@section\section
+\renewcommand{\section}{
+   \ifnum\value{chapter}=0 
+      \setcounter{chapter}{0}%
+      \setcounter{figure}{0}%
+      \setcounter{table}{0}%
+      \def\thesection{\Alph{section}} 
+      \addtocontents{lof}{\protect\addvspace{10\p@}}%
+      \addtocontents{lot}{\protect\addvspace{10\p@}}%
+   \fi
+      \saved@section
+}
+\renewcommand{\thefigure}
+   {\ifnum \c@chapter>\z@ \thechapter.\else \thesection.\fi \@arabic\c@figure}
+\renewcommand{\thetable}
+   {\ifnum \c@chapter>\z@ \thechapter.\else \thesection.\fi \@arabic\c@table}
+
+%%%%
+% Enable use of document-customized headers in ToC, LoF and LoT
+\renewcommand\tableofcontents{%
+   \if@twocolumn
+       \@restonecoltrue\onecolumn
+   \else
+       \@restonecolfalse
+   \fi
+   \chapter*{\contentsname}
+   \chaptermark{\contentsname}%
+   \@starttoc{toc}%
+   \if@restonecol\twocolumn\fi
+}
+\renewcommand\listoffigures{%
+   \if@twocolumn
+      \@restonecoltrue\onecolumn
+   \else
+      \@restonecolfalse
+   \fi
+   \chapter*{\listfigurename}%
+   \chaptermark{\listfigurename}%
+   \@starttoc{lof}%
+   \if@restonecol\twocolumn\fi
+}
+\renewcommand\listoftables{%
+   \if@twocolumn
+      \@restonecoltrue\onecolumn
+   \else
+      \@restonecolfalse
+   \fi
+   \chapter*{\listtablename}%
+   \chaptermark{\listtablename}%
+   \@starttoc{lot}%
+   \if@restonecol\twocolumn\fi
+}
+
+%%%%
+% Increase the lof/lot indent for figures and tables after the number
+\renewcommand*{\l@figure}{\@dottedtocline{1}{1.5em}{2.8em}}
+\let\l@table\l@figure
+
+
+%
+%\input{new-mcommon.sty}
+
+%%%%%%%%
+% Moved these from mcommon
+%
+\def\@sect#1#2#3#4#5#6[#7]#8{
+   \ifnum #2>\c@secnumdepth
+      \def\@svsec{}
+   \else 
+      \refstepcounter{#1}\edef\@svsec{\csname the#1\endcsname
+         \ifnum #2=1.\fi\hskip 0.6em }
+   \fi
+   \@tempskipa #5\relax
+   \ifdim \@tempskipa>\z@ 
+   \begingroup #6\relax
+      \@hangfrom{\hskip #3\relax\@svsec}{\interlinepenalty \@M #8\par}%
+   \endgroup
+   \csname #1mark\endcsname{#7}\addcontentsline
+      {toc}{#1}{\ifnum #2>\c@secnumdepth \else
+                   \protect\numberline{\csname the#1\endcsname
+                   \ifnum #2=1.\fi}\fi
+                #7}\else
+      \def\@svsechd{#6\hskip #3\@svsec #8\csname #1mark\endcsname
+                    {#7}\addcontentsline
+                         {toc}{#1}{\ifnum #2>\c@secnumdepth \else
+                           \protect\numberline{\csname the#1\endcsname
+                            \ifnum #2=1.\fi}\fi
+                     #7}}\fi
+   \@xsect{#5}}
+
+%\ifJPN
+   \setlength\Cvs{\baselineskip}
+   \def\@makechapterhead#1{\hbox{}%
+      \vskip2\Cvs %%%% THIS  \CVS or \baselineskip
+      {\parindent\z@ \raggedright
+       \reset@font\bfseries\ifJPN\gtfamily\fi%
+       \leavevmode
+       \ifnum \c@secnumdepth >\m@ne
+          \setbox\z@\hbox{\LARGE\@chapapp\space\thechapter%
+             \ifJPN\space\@chappos\fi\hfill}%
+          \unhbox\z@\break%
+          \ifJPN
+             \ifptex
+                \vtop{\huge\vspace{-6pt}\hspace*{1zw}\@stretchlabel{6zw}{#1}\hfill}%
+             \else
+                \vtop{\huge\vspace{-6pt}\hspace*{1em}\@stretchlabel{6em}{#1}\hfill}%
+             \fi            
+          \else
+             \vtop{\renewcommand{\baselinestretch}{0.9}\huge\vspace{0pt}{#1}\hfill}%       \fi
+         \fi
+      \else
+         #1\relax
+      \fi}\nobreak\vskip3\Cvs}
+%\else    % this currently comment out patch causes few space between
+%         % Acknowledgement title and following text   
+%   \def\@makechapterhead#1{\hbox{}%
+%      \vskip2\baselineskip
+%      {\parindent\z@ \raggedright
+%       \reset@font\bfseries
+%       \leavevmode
+%       \ifnum \c@secnumdepth >\m@ne
+%          \setbox\z@\hbox{\LARGE\@chapapp\space\thechapter\hfill}%
+%          \unhbox\z@\break%
+%          \vtop{\renewcommand{\baselinestretch}{0.9}\huge\vspace{0pt}{#1}\hfill}%
+%       \else
+%         #1\relax
+%       \fi}\nobreak\vskip3\baselineskip
+%    }
+%    \def\@makeschapterhead#1{\hbox{}%
+%       \vskip2\baselineskip
+%       {\parindent\z@ \raggedright
+%        \reset@font\huge\bfseries
+%        \leavevmode
+%        \setlength\@tempdima{\linewidth}%
+%        \vtop{\hsize\@tempdima#1}}\nobreak\vskip3\baselineskip
+%   }
+%\fi
+
+
+\def\@makeschapterhead#1{\hbox{}%
+   \vskip2\Cvs
+   {\parindent\z@
+    \raggedright
+    \reset@font\huge\bfseries\ifJPN\gtfamily\fi
+    \leavevmode
+    \setlength\@tempdima{\linewidth}%
+    \ifJPN
+       \ifptex
+          \vtop{\hsize\@tempdima\@stretchlabel{6zw}{#1}}%
+       \else
+          \vtop{\hsize\@tempdima\@stretchlabel{6em}{#1}}%
+       \fi
+    \else
+       \vtop{\hsize\@tempdima#1}%
+    \fi
+    \hfill}\vskip3\Cvs}
+
+%%%%%%%%
+%
+% Figure and Table Caption
+%       from jarticle.sty, however, `` ''(blank) was used instead of 
+%       ``:'' to separate figure/table numbers and captions.
+%
+\long\def\@makecaption#1#2{
+   \vskip 10pt 
+   \setbox\@tempboxa\hbox{#1 \ #2}
+   \ifdim \wd\@tempboxa >\hsize #1 \ #2\par \else \hbox
+      to\hsize{\hfil\box\@tempboxa\hfil} 
+   \fi}
+%
+% References (bug fix jarticle.sty)
+%
+\def\thebibliography#1{%
+   \ifJPN
+      \chapter*{参考文献\markboth{参考文献}{}
+         \addcontentsline{toc}{chapter}{参考文献}}
+      \chaptermark{参考文献}
+   \else
+      \chapter*{References\@mkboth{References}{}
+         \addcontentsline{toc}{chapter}{References}}
+      \chaptermark{References}
+   \fi
+   \list{[\arabic{enumi}]}{\settowidth\labelwidth{[#1]}\leftmargin\labelwidth
+   \advance\leftmargin\labelsep
+   \usecounter{enumi}}
+   \def\newblock{\hskip .11em plus .33em minus -.07em}
+   \sloppy
+   \sfcode`\.=1000\relax}
+\let\endthebibliography=\endlist
+% 
+% page layout
+%
+\topmargin=0cm
+\textheight=20.5cm                      % 高さ
+\textwidth=14.6cm                       % 横幅 (約３６文字)
+\oddsidemargin=0.9cm                    % 左の空きの幅
+\evensidemargin=0.43cm                  % 右の空きの幅
+\parindent 1em                          % 字下げ 1文字
+\ifJPN
+   \renewcommand{\baselinestretch}{1.2}    % 行間
+\else
+   \renewcommand{\baselinestretch}{1.2}    % 行間
+\fi
+%
+% pagestyle
+%
+\def\yes{1}
+%
+% for final
+%
+%\def\ps@final{
+%   \def\isfinal{1}
+%   \def\@evenhead{}%
+%   \def\@oddhead{}%
+%   \def\@oddfoot{\hfill\thepage\hfill}%
+%   \def\@evenfoot{\hfill\thepage\hfill}%
+%   \def\draftstr{}%
+%}
+%
+% drafts
+%
+\def\draftstr{\number\yyyymmdd\ \currenttime}
+%\def\ps@draft{
+%   \def\isfinal{0}
+%   \def\draftfoot{%
+%   {{\sf \draftstr}\hfill{\sf \thepage}}%
+%   }
+%   \def\@evenhead{}%
+%   \def\@oddhead{}%
+%   \def\@oddfoot{{\draftfoot}}%
+%   \def\@evenfoot{{\draftfoot}}%
+%}
+
+%
+% title page
+%
+\renewcommand{\titlepage}{
+   \newpage
+   \thispagestyle{empty}
+%  {\raggedleft
+%      \normalsize KMD-\studentnumberstr \\
+%  }
+   \ifDRAFT
+      \begin{center}   
+         {\Large\bf === DRAFT {\tt \number\yyyymmdd\ \currenttime}\ DRAFT ===}
+      \end{center}
+   \else
+      {\LARGE\ }
+   \fi
+
+   \begin{center}
+      \ifJPN
+         \LARGE\jdoctitle\jayearstr
+      \else
+         \LARGE\doctitle\, \\ \ayearstr\
+      \fi       
+   \end{center}
+   \vspace*{7mm}
+   \begin{center}
+      \ifJPN
+         \LARGE\jtitlestr
+      \else
+         \LARGE\titlestr
+      \fi
+   \end{center}
+
+   \vspace*{4mm}
+   \begin{center}
+      \ifJPN
+         \ifdefined\jsubtitlestr{\large\jsubtitlestr}\else{\large\ }\fi
+      \else
+         \ifdefined\subtitlestr{\large\subtitlestr}\else{\large\ }\fi
+      \fi
+   \end{center}
+   \vspace{\fill}
+   \vspace*{10mm}
+
+   \begin{center}
+      \includegraphics[width=30mm]{kmd-logo.eps}
+   \end{center}
+   
+   \vspace*{10mm}
+   \begin{center}
+      \ifJPN
+          {\Large 慶應義塾大学 \\
+            大学院メディアデザイン研究科}
+      \else
+          {\Large Keio University\\
+           \vspace*{3mm}
+           Graduate School of Media Design}
+      \fi
+   \end{center}
+   \begin{center}
+      \ifJPN
+         \LARGE\jauthorstr
+      \else
+         \LARGE\authorstr
+      \fi
+   \end{center}
+   \vspace*{10mm}
+%  \vspace*{\fill}
+}
+
+%
+% committee members page
+%
+\newcommand{\comemberspage}{
+   \newpage
+   \thispagestyle{empty}
+   \vspace*{\fill}
+   \begin{center}
+      \ifJPN
+         本{\jdoctype}は慶應義塾大学大学院メディアデザイン研究科に\\
+         \ifPROPOSAL
+            博士候補の要件として提出した\jdocname である。
+         \else
+            \jdegree(\jmajorstr)授与の要件として提出した\jdocname である。
+         \fi
+      \else
+         A \doctitle\\
+         submitted to
+         Keio University Graduate School of Media Design \\
+         in partial fulfillment of the requirements for
+         \ifPROPOSAL
+            Ph.D. Candidate in\ 
+         \else
+            the degree of\\ \degree\ 
+         \fi
+         \majorstr
+      \fi
+
+      \vskip 2ex
+      \bigskip
+      \ifJPN
+         \jauthorstr
+      \else
+         \authorstr
+      \fi
+
+      \bigskip\bigskip
+      \vskip 2ex
+     
+      \ifJPN
+         \begin{tabular}{p{0.3in}ll}
+            \multicolumn{2}{l}{研究指導コミッティ：} & \\
+            & \firstjAdvisoryMember & \firstjAdvisoryPosition \\
+            & \secondjAdvisoryMember & \secondjAdvisoryPosition \\
+            \ifnum\njAdvisoryMembers>2
+               & \thirdjAdvisoryMember & \thirdjAdvisoryPosition \\
+            \fi
+            \ifnum\njAdvisoryMembers>3
+               & \fourthjAdvisoryMember & \fourthjAdvisoryPosition \\
+            \fi
+            \ifnum\njAdvisoryMembers>4
+               & \fifthjAdvisoryMember & \fifthjAdvisoryPosition \\
+            \fi
+            \ifnum\njAdvisoryMembers>5
+               & \sixthjAdvisoryMember & \sixthjAdvisoryPosition \\
+            \fi
+            & & \\
+            \multicolumn{2}{l}{論文審査委員会：} & \\
+            & \firstjThesisMember & \firstjThesisPosition \\
+            & \secondjThesisMember & \secondjThesisPosition \\
+            & \thirdjThesisMember & \thirdjThesisPosition \\
+            \ifnum\njThesisMembers>3
+               & \fourthjThesisMember & \fourthjThesisPosition \\
+            \fi
+            \ifnum\njThesisMembers>4
+               & \fifthjThesisMember & \fifthjThesisPosition \\
+            \fi
+            \ifnum\njThesisMembers>5
+               & \sixthjThesisMember & \sixthjThesisPosition \\
+            \fi
+         \end{tabular}
+      \else %\ifJPN
+         \begin{tabular}{p{0.5in}ll}
+         \ifDR
+            \multicolumn{2}{l}{Dissertation Advisory Committee:} & \\
+         \else
+            \multicolumn{2}{l}{Master's Thesis Advisory Committee:} & \\
+         \fi
+         & \firstAdvisoryMember & \firstAdvisoryPosition \\
+         & \secondAdvisoryMember & \secondAdvisoryPosition \\
+         \ifnum\nAdvisoryMembers>2
+            & \thirdAdvisoryMember & \thirdAdvisoryPosition \\
+         \fi
+         \ifnum\nAdvisoryMembers>3
+            & \fourthAdvisoryMember & \fourthAdvisoryPosition \\
+         \fi
+         \ifnum\nAdvisoryMembers>4
+            & \fifthAdvisoryMember & \fifthAdvisoryPosition \\
+         \fi
+         \ifnum\nAdvisoryMembers>5
+            & \sixthAdvisoryMember & \sixthAdvisoryPosition \\
+         \fi
+         & & \\
+         \ifPROPOSAL
+         % No Review Committee is available for Ph.D. Proposal
+         \else
+            \ifDR
+               \multicolumn{2}{l}{Doctoral Dissertation Review Committee:} & \\
+            \else
+               \multicolumn{2}{l}{Master's Thesis Review Committee:} & \\
+            \fi
+            & \firstThesisMember & \firstThesisPosition \\
+            & \secondThesisMember & \secondThesisPosition \\
+            & \thirdThesisMember & \thirdThesisPosition \\
+            \ifnum\nThesisMembers>3
+               & \fourthThesisMember & \fourthThesisPosition \\
+            \fi
+            \ifnum\nThesisMembers>4
+               & \fifthThesisMember & \fifthThesisPosition \\
+            \fi
+            \ifnum\nThesisMembers>5
+               & \sixthThesisMember & \sixthThesisPosition \\
+            \fi
+         \fi
+         \end{tabular}
+      \fi %\ifJPN
+   \end{center}
+}
+%
+% abstract pages
+%
+\newcommand{\firstabstract}{
+   \newpage
+   \pagenumbering{roman}
+   \thispagestyle{plain}
+   \chaptermark{\abstractname}   
+   \ifJPN
+      \jabstractpage
+   \else
+      \abstractpage
+   \fi
+}
+
+\newcommand{\secondabstract}{
+    \newpage
+    \thispagestyle{plain}
+    \renewcommand{\abstractname}{Abstract}    
+    \chaptermark{\abstractname}
+    \abstractpage
+}
+
+%
+\newcommand{\acknowledgements}{
+  \cleardoublepage
+  \ifJPN
+     \chapter*{謝辞\addcontentsline{toc}{chapter}{謝辞}}
+     \chaptermark{謝辞}
+  \else
+     \chapter*{Acknowledgements\addcontentsline{toc}{chapter}{Acknowledgements}}
+     \chaptermark{Acknowledgements}
+  \fi
+}
+%
+\newcommand{\reference}{
+  \cleardoublepage
+  \ifJPN
+     \chapter*{参考文献\addcontentsline{toc}{chapter}{参考文献}}
+     \chaptermark{参考文献}
+  \else     
+     \chapter*{References\addcontentsline{toc}{chapter}{References}}
+     \chaptermark{References}
+}
+%%%%
+%\renewcommand{\appendix}{\par
+%        \setcounter{section}{0}
+%        \setcounter{subsection}{0}
+%        \def\thesection{\Alph{section}}
+%        \newpage
+%        \chapter*{付録\addcontentsline{toc}{chapter}{付録}}
+%}
+\let\saved@appendix\appendix
+\renewcommand{\appendix}{\par
+    \saved@appendix
+    \newpage
+    \thispagestyle{plain}
+    \chaptermark{\appendicestitle}% 
+    \chapter*{\appendicestitle\addcontentsline{toc}{chapter}{\appendicestitle}}
+}
+
+%%%%
+% Remove manual letterspacing from built-in chapter titles for consistency 
+% with other chapters (if really desired e.g. for headers then it can be added
+% back by the actual document using some kind of letterspace command).
+\ifJPN
+   \renewcommand{\appendixname}{付録}
+   \renewcommand{\abstractname}{論文要旨}
+   \renewcommand{\contentsname}{目次}
+   \renewcommand{\listfigurename}{図目次}
+   \renewcommand{\listtablename}{表目次}
+   \renewcommand{\indexname}{索引}
+   \newcommand{\appendicestitle}{付録}
+\else
+   \renewcommand{\contentsname}{Table of Contents}
+   \renewcommand{\listfigurename}{List of Figures}
+   \renewcommand{\listtablename}{List of Tables}
+%  \renewcommand{\bibname}{Bibliography}
+%  \renewcommand{\bibname}{References}
+   \renewcommand{\indexname}{Index}
+   \renewcommand{\figurename}{Figure}
+   \renewcommand{\tablename}{Table}
+%  \renewcommand{\partname}{Part}
+%  \renewcommand{\chaptername}{Chapter}
+   \renewcommand{\appendixname}{Appendix}
+   \renewcommand{\abstractname}{Abstract}
+   \newcommand{\appendicestitle}{Appendices}
+\fi
+
+%%%%
+%% Define chaptermark for the toc, lof and lot (in case page headers are used)
+%%  --> (No longer needed due to redefinitions in new-mcommon.sty)
+%\let\savedtoc\tableofcontents
+%\renewcommand{\tableofcontents}{
+%    \chaptermark{目次}%
+%    \savedtoc
+%}
+%\let\savedlof\listoffigures
+%\renewcommand{\listoffigures}{
+%    \chaptermark{図目次}%
+%    \savedlof
+%}
+%\let\savedlot\listoftables
+%\renewcommand{\listoftables}{
+%    \chaptermark{表目次}%
+%    \savedlot
+%}
+
+%%%%
+% Set plain style on inserted blank pages in twoside+openright mode
+\renewcommand\cleardoublepage{\clearpage\if@twoside \ifodd\c@page\else
+    \hbox{}
+    \thispagestyle{plain}
+    \newpage
+    \if@twocolumn\hbox{}\newpage\fi\fi\fi
+}
+
+% \appendix doesn't reset footnote counter so it could results in error
+% in endnotes process when there is no footnote in appendix.
+
+\let\originalappendix\appendix
+\def\appendix{
+   \setcounter{footnote}{0}%
+   \originalappendix
+}
+
+%%%% Endnotes only appears in Chicago mode
+
+\ifCHICAGO
+   \def\putendnotes{
+      \ifnum\thefootnote>0
+         \ifJPN
+            \section*{注}
+            \addcontentsline{toc}{section}{注}
+         \else
+            \section*{Notes}
+            \addcontentsline{toc}{section}{Notes}
+         \fi
+         \begin{footnotesize}
+            \theendnotes
+         \end{footnotesize}
+      \fi
+   }
+\else
+   \def\makeendnotes{}
+   \def\putendnotes{}
+\fi
